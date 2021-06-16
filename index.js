@@ -1,23 +1,27 @@
-/* eslint-disable no-await-in-loop */
+function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function demo(ctx, fieldWidth, fieldHeight) {
-    for (let ih = 50; ih < fieldHeight; ih += 100) {
-        for (let iw = 50; iw < fieldWidth; iw += 100) {
-            ctx.beginPath();
-            ctx.fillStyle = "rgb(255,0,0)";
-            ctx.arc(iw, ih, 25, 0, Math.PI * 2, true);
-            ctx.fill();
+    while (true) {
+        const rWidth = getRandomNumber(0, fieldWidth / 100);
+        const rHeight = getRandomNumber(0, fieldHeight / 100);
 
-            await sleep(1000);
+        ctx.beginPath();
+        ctx.fillStyle = "rgb(255,0,0)";
+        ctx.arc(50 + (rWidth * 100), 50 + (rHeight * 100), 25, 0, Math.PI * 2, true);
+        ctx.fill();
 
-            ctx.beginPath();
-            ctx.fillStyle = "rgb(255,255,255)";
-            ctx.arc(iw, ih, 26, 0, Math.PI * 2, true);
-            ctx.fill();
-        }
+        await sleep(1000);
+
+        ctx.beginPath();
+        ctx.fillStyle = "rgb(255,255,255)";
+        ctx.arc(50 + (rWidth * 100), 50 + (rHeight * 100), 26, 0, Math.PI * 2, true);
+        ctx.fill();
     }
 }
 
@@ -41,13 +45,5 @@ if (canvas.getContext) {
         }
     }
 
-    //    ctx.fillStyle = "rgb(255,255,255)";
-    //    ctx.arc(50, 50, 26, 0, Math.PI * 2, true);
-    //    ctx.fill();
-    //
-    //    ctx.beginPath();
-    //    ctx.fillStyle = "rgb(255,0,0)";
-    //    ctx.arc(50 + 100, 50, 25, 0, Math.PI * 2, true);
-    //    ctx.fill();
     demo(ctx, fieldWidth, fieldHeight);
 }

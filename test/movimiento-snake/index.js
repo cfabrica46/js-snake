@@ -3,8 +3,47 @@
 //     return Math.floor(Math.random() * (max - min) + min);
 // }
 
+document.addEventListener("keydown", (e) => {
+    switch (e.keyCode) {
+        case 87:
+            sessionStorage.setItem("direcction", "up");
+            break;
+        case 65:
+            sessionStorage.setItem("direcction", "left");
+            break;
+        case 68:
+            sessionStorage.setItem("direcction", "right");
+            break;
+        case 83:
+            sessionStorage.setItem("direcction", "down");
+            break;
+        case 37:
+            sessionStorage.setItem("direcction", "left");
+            break;
+        case 38:
+            sessionStorage.setItem("direcction", "up");
+            break;
+        case 39:
+            sessionStorage.setItem("direcction", "right");
+            break;
+        case 40:
+            sessionStorage.setItem("direcction", "down");
+            break;
+        default:
+    }
+});
+
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function gameOver(ctx, fieldWidth, fieldHeight) {
+    ctx.fillStyle = "rgb(0,0,0)";
+    ctx.fillRect(0, 0, 1200, 900);
+    ctx.fillStyle = "rgb(255,255,255)";
+    ctx.font = "100px serif";
+    ctx.fillText("GAME OVER!", fieldWidth / 4, fieldHeight / 2);
+    return true;
 }
 
 async function demo(ctx, fieldWidth, fieldHeight) {
@@ -22,14 +61,12 @@ async function demo(ctx, fieldWidth, fieldHeight) {
         let ubicationX = parseInt(u[0], 10);
         let ubicationY = parseInt(u[1], 10);
 
-        await sleep(1000);
+        await sleep(500);
 
         switch (sessionStorage.getItem("direcction")) {
             case ("up"):
                 if (ubicationY === 50) {
-                    console.log("Game Over");
-                    exit = true;
-                    break;
+                    exit = gameOver(ctx, fieldWidth, fieldHeight);
                 }
 
                 ctx.beginPath();
@@ -44,13 +81,11 @@ async function demo(ctx, fieldWidth, fieldHeight) {
                 ctx.arc(ubicationX, ubicationY, 25, 0, Math.PI * 2, true);
                 ctx.fill();
 
-                sessionStorage.setItem("ubication", `50-${ubicationY}`);
+                sessionStorage.setItem("ubication", `${ubicationX}-${ubicationY}`);
                 break;
             case ("down"):
                 if (ubicationY === fieldHeight - 50) {
-                    console.log("Game Over");
-                    exit = true;
-                    break;
+                    exit = gameOver(ctx, fieldWidth, fieldHeight);
                 }
 
                 ctx.beginPath();
@@ -65,14 +100,12 @@ async function demo(ctx, fieldWidth, fieldHeight) {
                 ctx.arc(ubicationX, ubicationY, 25, 0, Math.PI * 2, true);
                 ctx.fill();
 
-                sessionStorage.setItem("ubication", `50-${ubicationY}`);
+                sessionStorage.setItem("ubication", `${ubicationX}-${ubicationY}`);
                 break;
             case ("right"):
 
                 if (ubicationX === fieldWidth - 50) {
-                    console.log("Game Over");
-                    exit = true;
-                    break;
+                    exit = gameOver(ctx, fieldWidth, fieldHeight);
                 }
 
                 ctx.beginPath();
@@ -87,14 +120,12 @@ async function demo(ctx, fieldWidth, fieldHeight) {
                 ctx.arc(ubicationX, ubicationY, 25, 0, Math.PI * 2, true);
                 ctx.fill();
 
-                sessionStorage.setItem("ubication", `${ubicationX}-50`);
+                sessionStorage.setItem("ubication", `${ubicationX}-${ubicationY}`);
                 break;
             case ("left"):
 
                 if (ubicationX === 50) {
-                    console.log("Game Over");
-                    exit = true;
-                    break;
+                    exit = gameOver(ctx, fieldWidth, fieldHeight);
                 }
 
                 ctx.beginPath();
@@ -109,7 +140,7 @@ async function demo(ctx, fieldWidth, fieldHeight) {
                 ctx.arc(ubicationX, ubicationY, 25, 0, Math.PI * 2, true);
                 ctx.fill();
 
-                sessionStorage.setItem("ubication", `${ubicationX}-50`);
+                sessionStorage.setItem("ubication", `${ubicationX}-${ubicationY}`);
                 break;
             default:
         }
@@ -129,12 +160,10 @@ if (canvas.getContext) {
     const fieldWidth = 1200;
     const fieldHeight = 800;
 
-    sessionStorage.setItem("direcction", "left");
+    sessionStorage.setItem("direcction", "right");
     sessionStorage.setItem("ubication", "50-50");
 
     const u = sessionStorage.getItem("ubication").split("-");
-
-    console.log(u);
 
     ctx.strokeStyle = "rgb(30,105,26)";
     ctx.lineWidth = 8;

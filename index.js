@@ -159,11 +159,11 @@ async function play(ctx, fieldWidth, fieldHeight) {
         }
 
         if (sessionStorage.getItem("ubicationSnake") === sessionStorage.getItem("ubicationFruit")) {
-            ctx.clearRect(10, 810, 110, 30);
+            ctx.clearRect(10, 810, 500, 30);
+            sessionStorage.setItem("points", parseInt(sessionStorage.getItem("points"), 10) + 1);
             ctx.fillStyle = "rgb(0,0,0)";
             ctx.font = "30px serif";
             ctx.fillText(`Points: ${sessionStorage.getItem("points")}`, 10, 830);
-            sessionStorage.setItem("points", parseInt(sessionStorage.getItem("points"), 10) + 1);
             generateFruit(ctx, fieldWidth, fieldHeight);
         }
     }

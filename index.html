@@ -7,12 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="index.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+    <form id="form" class="form">
+        <button id="play" class="btn-play">Play</button>
+        <div class="select">
+            <input type="radio" id="slow" name="speed" value="1000" class="radio">
+            <label for="slow" class="label">Slow</label>
+            <input type="radio" id="medium" name="speed" value="500" class="radio" checked>
+            <label for="medium" class="label">Medium</label>
+            <input type="radio" id="fast" name="speed" value="250" class="radio">
+            <label for="fast" class="label">Fast</label>
+        </div>
 
-    <canvas id="canvas" width="1200" height="900"></canvas>
-
+    </form>
+    <canvas id="canvas" class="canvas" width="1200" height="900"></canvas>
 </body>
 
 </html>

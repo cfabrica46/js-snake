@@ -1,4 +1,5 @@
 /* eslint-disable indent */
+
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
@@ -79,15 +80,12 @@ function gameOver(ctx, fieldWidth, fieldHeight) {
 async function play(ctx, fieldWidth, fieldHeight) {
     let exit = false;
     while (exit === false) {
-        ctx.fillStyle = "rgb(0,0,0)";
-        ctx.font = "30px serif";
-        ctx.fillText(`Points: ${sessionStorage.getItem("points")}`, 10, 830);
 
         const u = sessionStorage.getItem("ubicationSnake").split("-");
         let ubicationSnakeX = parseInt(u[0], 10);
         let ubicationSnakeY = parseInt(u[1], 10);
 
-        await sleep(500);
+        await sleep(parseInt(sessionStorage.getItem("speed")));
 
         ctx.beginPath();
         ctx.fillStyle = "rgb(255,255,255)";
@@ -162,45 +160,67 @@ async function play(ctx, fieldWidth, fieldHeight) {
 
         if (sessionStorage.getItem("ubicationSnake") === sessionStorage.getItem("ubicationFruit")) {
             ctx.clearRect(10, 810, 110, 30);
+            ctx.fillStyle = "rgb(0,0,0)";
+            ctx.font = "30px serif";
+            ctx.fillText(`Points: ${sessionStorage.getItem("points")}`, 10, 830);
             sessionStorage.setItem("points", parseInt(sessionStorage.getItem("points"), 10) + 1);
             generateFruit(ctx, fieldWidth, fieldHeight);
         }
     }
 }
 
-const canvas = document.getElementById("canvas");
-if (canvas.getContext) {
-    const ctx = canvas.getContext("2d");
+const playBtn = document.getElementById("play");
+playBtn.addEventListener("click", (e) => {
+    e.preventDefault();
 
-    const fieldWidth = 1200;
-    const fieldHeight = 800;
+    const radios = document.querySelectorAll(".radio");
 
-    sessionStorage.setItem("points", "0");
-
-    sessionStorage.setItem("direcction", "right");
-    sessionStorage.setItem("ubicationSnake", "50-50");
-
-    const u = sessionStorage.getItem("ubicationSnake").split("-");
-
-    ctx.strokeStyle = "rgb(30,105,26)";
-    ctx.lineWidth = 8;
-    ctx.strokeRect(0, 0, fieldWidth, fieldHeight);
-
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = "rgb(73,183,69)";
-
-    for (let ih = 0; ih < fieldHeight; ih += 100) {
-        for (let iw = 0; iw < fieldWidth; iw += 100) {
-            ctx.strokeRect(iw, ih, 100, 100);
+    radios.forEach((radio) => {
+        if (radio.checked === true) {
+            sessionStorage.setItem("speed", radio.value);
         }
+    });
+
+    document.getElementById("form").remove();
+
+    const canvas = document.getElementById("canvas");
+    if (canvas.getContext) {
+        const ctx = canvas.getContext("2d");
+
+        const fieldWidth = 1200;
+        const fieldHeight = 800;
+
+        sessionStorage.setItem("points", "0");
+
+        sessionStorage.setItem("direcction", "right");
+        sessionStorage.setItem("ubicationSnake", "50-50");
+
+        const u = sessionStorage.getItem("ubicationSnake").split("-");
+
+        ctx.strokeStyle = "rgb(30,105,26)";
+        ctx.lineWidth = 8;
+        ctx.strokeRect(0, 0, fieldWidth, fieldHeight);
+
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "rgb(73,183,69)";
+
+        for (let ih = 0; ih < fieldHeight; ih += 100) {
+            for (let iw = 0; iw < fieldWidth; iw += 100) {
+                ctx.strokeRect(iw, ih, 100, 100);
+            }
+        }
+
+        generateFruit(ctx, fieldWidth, fieldHeight);
+
+        ctx.beginPath();
+        ctx.fillStyle = "rgb(56,138,54)";
+        ctx.arc(u[0], u[1], 25, 0, Math.PI * 2, true);
+        ctx.fill();
+
+        ctx.fillStyle = "rgb(0,0,0)";
+        ctx.font = "30px serif";
+        ctx.fillText(`Points: ${sessionStorage.getItem("points")}`, 10, 830);
+
+        play(ctx, fieldWidth, fieldHeight);
     }
-
-    generateFruit(ctx, fieldWidth, fieldHeight);
-
-    ctx.beginPath();
-    ctx.fillStyle = "rgb(56,138,54)";
-    ctx.arc(u[0], u[1], 25, 0, Math.PI * 2, true);
-    ctx.fill();
-
-    play(ctx, fieldWidth, fieldHeight);
-}
+});

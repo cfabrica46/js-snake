@@ -1,7 +1,4 @@
 /* eslint-disable indent */
-// function getRandomNumber(min, max) {
-//     return Math.floor(Math.random() * (max - min) + min);
-// }
 
 document.addEventListener("keydown", (e) => {
     switch (e.keyCode) {
@@ -39,7 +36,7 @@ function sleep(ms) {
 
 function gameOver(ctx, fieldWidth, fieldHeight) {
     ctx.fillStyle = "rgb(0,0,0)";
-    ctx.fillRect(0, 0, 1200, 900);
+    ctx.fillRect(0, 0, fieldWidth + 50, fieldHeight + 50);
     ctx.fillStyle = "rgb(255,255,255)";
     ctx.font = "100px serif";
     ctx.fillText("GAME OVER!", fieldWidth / 4, fieldHeight / 2);
@@ -49,14 +46,6 @@ function gameOver(ctx, fieldWidth, fieldHeight) {
 async function demo(ctx, fieldWidth, fieldHeight) {
     let exit = false;
     while (exit === false) {
-        //     const rWidth = getRandomNumber(0, fieldWidth / 100);
-        //     const rHeight = getRandomNumber(0, fieldHeight / 100);
-        //
-        //     ctx.beginPath();
-        //     ctx.fillStyle = "rgb(255,0,0)";
-        //     ctx.arc(50 + (rWidth * 100), 50 + (rHeight * 100), 25, 0, Math.PI * 2, true);
-        //     ctx.fill();
-        //
         const u = sessionStorage.getItem("ubication").split("-");
         let ubicationX = parseInt(u[0], 10);
         let ubicationY = parseInt(u[1], 10);
@@ -67,6 +56,7 @@ async function demo(ctx, fieldWidth, fieldHeight) {
             case ("up"):
                 if (ubicationY === 50) {
                     exit = gameOver(ctx, fieldWidth, fieldHeight);
+                    return;
                 }
 
                 ctx.beginPath();
@@ -86,6 +76,7 @@ async function demo(ctx, fieldWidth, fieldHeight) {
             case ("down"):
                 if (ubicationY === fieldHeight - 50) {
                     exit = gameOver(ctx, fieldWidth, fieldHeight);
+                    return;
                 }
 
                 ctx.beginPath();
@@ -106,6 +97,7 @@ async function demo(ctx, fieldWidth, fieldHeight) {
 
                 if (ubicationX === fieldWidth - 50) {
                     exit = gameOver(ctx, fieldWidth, fieldHeight);
+                    return;
                 }
 
                 ctx.beginPath();
@@ -126,6 +118,7 @@ async function demo(ctx, fieldWidth, fieldHeight) {
 
                 if (ubicationX === 50) {
                     exit = gameOver(ctx, fieldWidth, fieldHeight);
+                    return;
                 }
 
                 ctx.beginPath();
@@ -144,12 +137,6 @@ async function demo(ctx, fieldWidth, fieldHeight) {
                 break;
             default:
         }
-
-        //
-        //     ctx.beginPath();
-        //     ctx.fillStyle = "rgb(255,255,255)";
-        //     ctx.arc(50 + (rWidth * 100), 50 + (rHeight * 100), 26, 0, Math.PI * 2, true);
-        //     ctx.fill();
     }
 }
 
